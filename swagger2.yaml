@@ -1,0 +1,199 @@
+# Informations générales sur l'API
+swagger: '2.0'
+info:
+  title: Argent Bank API Documentation
+  description: API for managing user transactions in the phase 2 ArgentBank.
+  version: '1.0.0'
+  termsOfService: 'http://swagger.io/terms/'
+host: localhost:3001
+basePath: /api/v2
+schemes:
+  - http
+
+# Endpoint pour les transactions de l'utilisateur
+/user/transactions:
+  # Opération GET
+  get:
+    tags:
+      - Transactions de l'utilisateur
+    summary: Récupérer les transactions de l'utilisateur
+    description: Récupère toutes les transactions de l'utilisateur pour le mois en cours
+    security:
+      - Bearer: []
+    produces:
+      - application/json
+    parameters:
+      - name: token
+        in: header
+        required: true
+        type: string
+        description: Token d'authentification de l'utilisateur
+      - name: accountId  # Ajout ici
+        in: query
+        required: true
+        type: string
+        description: ID du compte utilisateur
+    responses:
+      '200':
+        description: Transactions de l'utilisateur récupérées avec succès
+      '400':
+        description: Le champ `token` ou `accountId` est requis.
+      '500':
+        description: Erreur interne du serveur
+
+  # Opération POST
+  post:
+    tags:
+      - Transactions de l'utilisateur
+    summary: Mettre à jour les informations des transactions
+    description: Modifie les informations des transactions
+    security:
+      - Bearer: []
+    produces:
+      - application/json
+    parameters:
+      - name: token
+        in: header
+        required: true
+        type: string
+        description: Token d'authentification de l'utilisateur
+      - name: accountId  # Ajout ici
+        in: query
+        required: true
+        type: string
+        description: ID du compte utilisateur
+    responses:
+      '200':
+        description: Informations de la transaction mises à jour avec succès
+      '400':
+        description: Le jeton est requis.
+      '500':
+        description: Erreur interne du serveur
+
+# Endpoint pour une transaction spécifique de l'utilisateur
+/user/transactions/{transactionId}:
+  # Opération GET
+  get:
+    tags:
+      - Transactions de l'utilisateur
+    summary: Obtenir les détails de la transaction
+    description: Obtenir des informations spécifiques sur la transaction
+    security:
+      - Bearer: []
+    produces:
+      - application/json
+    parameters:
+      - name: token
+        in: header
+        required: true
+        type: string
+        description: Token d'authentification de l'utilisateur
+      - name: transactionId
+        in: path
+        required: true
+        type: string
+        description: ID unique de la transaction
+    responses:
+      '200':
+        description: Informations de la transaction obtenues avec succès
+      '400':
+        description: L'un des champs `token`, `transactionId` ou `accountId` est requis.
+      '500':
+        description: Erreur interne du serveur
+
+  # Opération PUT
+  put:
+    tags:
+      - Transactions de l'utilisateur
+    summary: Mettre à jour les informations des transactions
+    description: Modifie les informations des transactions
+    security:
+      - Bearer: []
+    produces:
+      - application/json
+    parameters:
+      - name: token
+        in: header
+        required: true
+        type: string
+        description: Token d'authentification de l'utilisateur
+      - name: transactionId
+        in: path
+        required: true
+        type: string
+        description: ID unique de la transaction
+    responses:
+      '200':
+        description: Informations de la transaction mises à jour avec succès
+      '400':
+        description: L'un des champs `token`, `transactionId` ou `accountId` est requis.
+      '500':
+        description: Erreur interne du serveur
+
+  # Opération DELETE
+  delete:
+    tags:
+      - Transactions de l'utilisateur
+    summary: Supprimer les informations des transactions
+    description: Supprime les informations des transactions
+    security:
+      - Bearer: []
+    produces:
+      - application/json
+    parameters:
+      - name: token
+        in: header
+        required: true
+        type: string
+        description: Token d'authentification de l'utilisateur
+      - name: transactionId
+        in: path
+        required: true
+        type: string
+        description: ID unique de la transaction
+    responses:
+      '200':
+        description: Informations de la transaction supprimées avec succès
+      '400':
+        description: L'un des champs `token`, `transactionId` ou `accountId` est requis.
+      '500':
+        description: Erreur interne du serveur
+        
+# Définitions de sécurité
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+
+# Définitions des objets utilisés dans l'API
+definitions:
+  Account:
+    type: object
+    properties:
+      id:
+        type: string
+        description: ID du compte utilisateur
+      balance:
+        type: number
+        description: Solde du compte propriétaire
+      currency:
+        type: string
+        description: Devise
+
+  TransactionDetails:
+    type: object
+    properties:
+      id_transaction:
+        type: number
+        description: ID unique de la transaction
+      transactionType:
+        type: string
+        description: Type de transaction
+      category:
+        type: string
+        description: Catégorie de la transaction
+      notes:
+        type: string
+        description: Notes pertinentes ajoutées par l'utilisateur
+
